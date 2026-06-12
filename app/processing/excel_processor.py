@@ -1,14 +1,17 @@
 from pathlib import Path
-
 import pandas as pd
 
 from app.processing.validators import (
     validar_layout_clientes
 )
 
+from app.processing.normalizers import (
+    normalizar_clientes
+)
+
+
 
 class ExcelProcessor:
-
     @staticmethod
     def carregar_excel(filepath):
 
@@ -48,7 +51,11 @@ class ExcelProcessor:
         df = ExcelProcessor.carregar_excel(
             filepath
         )
-
+        
+        print(df.head())
+        print(df.dtypes)
+        
         validar_layout_clientes(df)
+        df = normalizar_clientes(df)
 
         return df

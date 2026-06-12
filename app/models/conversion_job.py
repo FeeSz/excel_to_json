@@ -17,6 +17,11 @@ class ConversionJob(db.Model):
         nullable=False
     )
 
+    layout_type = db.Column(
+    db.String(50),
+    nullable=True
+    )   
+
     filename = db.Column(
         db.String(255),
         nullable=False

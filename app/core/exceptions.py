@@ -17,3 +17,10 @@ class ProcessingError(Exception):
     Erros durante processamento.
     """
     pass
+
+
+class FileProcessingError(Exception):
+    """
+    Erro ao processar arquivo.
+    """
+    pass
