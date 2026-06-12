@@ -27,6 +27,11 @@ class JsonExporter:
             / filename
         )
 
+        if df.empty:
+            raise ValueError(
+                "Nenhum registro encontrado."
+            )
+
         dados = df.to_dict(
             orient="records"
         )
@@ -36,15 +41,11 @@ class JsonExporter:
             "w",
             encoding="utf-8"
         ) as arquivo:
-
             json.dump(
                 dados,
                 arquivo,
                 ensure_ascii=False,
                 indent=4
             )
-        if df.empty:
-            raise ValueError(
-                "Nenhum registro encontrado."
-            )
+
         return filename

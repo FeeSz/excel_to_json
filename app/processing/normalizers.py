@@ -3,11 +3,6 @@ import re
 
 def normalizar_cpf(cpf):
 
-    if len(cpf) != 11:
-        raise ValueError(
-            f"CPF inválido: {cpf}"
-        )
-
     if cpf is None:
         return ""
 
@@ -19,6 +14,8 @@ def normalizar_cpf(cpf):
         cpf
     )
 
+    if len(cpf) != 11:
+     raise ValueError(...)
     return cpf
 
 

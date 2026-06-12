@@ -44,6 +44,12 @@ class User(UserMixin, db.Model):
         db.DateTime,
         default=datetime.utcnow
     )
+    
+    upload_limit = db.Column(
+    db.Integer,
+    default=5
+    
+    )
 
     def __repr__(self):
         return f"<User {self.email}>"

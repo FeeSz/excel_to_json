@@ -106,8 +106,7 @@ class UploadService:
                 ConversionJob.user_id == user_id,
                 ConversionJob.status.in_([
                     JOB_PENDING,
-                    JOB_PROCESSING,
-                    MAX_PENDING_UPLOADS
+                    JOB_PROCESSING
                 ])
             ).count()
         )
@@ -115,10 +114,6 @@ class UploadService:
             raise ValueError(
                 "Limite de uplodas simultâneos atingido."
             )
-    upload_limit = db.Column(
-    db.Integer,
-    default=5
-    
-)
+
     
             

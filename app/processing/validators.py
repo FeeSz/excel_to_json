@@ -14,6 +14,10 @@ ESTOQUE_COLUMNS = []
 
 
 def validar_layout_clientes(df):
+    df.columns = [ 
+        coluna.strip().title()
+        for coluna in df.columns
+]
     colunas_faltantes = [
         coluna
         for coluna in CLIENTES_COLUMNS
@@ -26,9 +30,5 @@ def validar_layout_clientes(df):
             "Colunas obrigatórias ausentes: "
             + ", ".join(colunas_faltantes)
         )
-    df.columns = [ 
-        coluna.strip().title()
-        for coluna in df.columns
-]
 
     return True

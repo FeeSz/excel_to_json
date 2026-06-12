@@ -65,18 +65,13 @@ class ConversionJob(db.Model):
     )
 
     def __repr__(self):
-        return (
-            f"<ConversionJob "
-            f"{self.id} - {self.status}>"
+            return (
+                f"<ConversionJob "
+                f"{self.id} - {self.status}>"
     )
     
     stored_filename = db.Column(
-    db.String(255),
-    nullable=False
-    )
-
-    layout_type = db.Column(
-    db.String(50),
-    nullable=False
+        db.String(255),
+        nullable=False
     )
     

@@ -17,11 +17,17 @@ class ExcelProcessor:
     @staticmethod
     def carregar_excel(filepath):
 
+
         filepath = Path(filepath)
 
         if not filepath.exists():
             raise FileNotFoundError(
                 f"Arquivo não encontrado: {filepath}"
+            )
+                
+        if filepath.stat().st_size == 0:
+            raise ValueError(
+                "Arquivo vazio."
             )
 
         extensao = filepath.suffix.lower()
@@ -42,10 +48,6 @@ class ExcelProcessor:
             df = pd.read_excel(
                 filepath
             )
-        elif filepath.stat().st_size == 0:
-            raise ValueError(
-            "Arquivo vazio."
-            )
 
         else:
 
@@ -61,9 +63,7 @@ class ExcelProcessor:
         df = ExcelProcessor.carregar_excel(
             filepath
         )
-        
-        print(df.head())
-        print(df.dtypes)
+
         
         validar_layout_clientes(df)
         df = normalizar_clientes(df)
