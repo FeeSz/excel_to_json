@@ -1,0 +1,3 @@
+# Database de desenvolvimento: SQLITE: sqlite:///database.db
+
+## Database de produção: PostgreSQL: postgresql://...
