@@ -11,6 +11,8 @@ from app.processing.normalizers import (
 
 
 
+
+
 class ExcelProcessor:
     @staticmethod
     def carregar_excel(filepath):
@@ -25,16 +27,24 @@ class ExcelProcessor:
         extensao = filepath.suffix.lower()
 
         if extensao == ".xlsx":
-
-            df = pd.read_excel(
+            try:
+                df = pd.read_excel(
                 filepath,
                 engine="openpyxl"
             )
+            except Exception as erro:
+                raise ValueError(
+                    f"Erro ao abrir Excel: {erro}"
+                )
 
         elif extensao == ".xls":
 
             df = pd.read_excel(
                 filepath
+            )
+        elif filepath.stat().st_size == 0:
+            raise ValueError(
+            "Arquivo vazio."
             )
 
         else:
@@ -59,3 +69,5 @@ class ExcelProcessor:
         df = normalizar_clientes(df)
 
         return df
+    
+

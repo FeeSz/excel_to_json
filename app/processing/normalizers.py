@@ -3,6 +3,11 @@ import re
 
 def normalizar_cpf(cpf):
 
+    if len(cpf) != 11:
+        raise ValueError(
+            f"CPF inválido: {cpf}"
+        )
+
     if cpf is None:
         return ""
 
@@ -39,9 +44,7 @@ def normalizar_email(email):
         return ""
 
     return (
-        str(email)
-        .strip()
-        .lower()
+        str(email).strip().lower()
     )
 
 
@@ -51,9 +54,7 @@ def normalizar_nome(nome):
         return ""
 
     return (
-        str(nome)
-        .strip()
-        .title()
+        str(nome).strip().title()
     )
 
 
@@ -84,5 +85,4 @@ def normalizar_clientes(df):
             normalizar_email
         )
     )
-
     return df

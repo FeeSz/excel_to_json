@@ -12,9 +12,10 @@ class ConversionJob(db.Model):
     )
 
     user_id = db.Column(
-        db.Integer,
-        db.ForeignKey("users.id"),
-        nullable=False
+    db.Integer,
+    db.ForeignKey("users.id"),
+    nullable=False,
+    index=True
     )
 
     layout_type = db.Column(
@@ -40,7 +41,7 @@ class ConversionJob(db.Model):
     status = db.Column(
         db.String(50),
         nullable=False,
-        default="PENDENTE"
+        index=True
     )
 
     created_at = db.Column(
