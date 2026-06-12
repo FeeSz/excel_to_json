@@ -291,7 +291,7 @@ Campos obrigatórios:
 
 Desenvolvedor focado em automação, processamento de dados e desenvolvimento de sistemas web.
 
-🔗 GitHub: https://github.com/FeeSz
+🔗 Linkedln: [https://www.linkedin.com/in/felype-souza-4391353a2/]
 
 ---
 
