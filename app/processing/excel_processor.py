@@ -38,10 +38,16 @@ class ExcelProcessor:
                 filepath,
                 engine="openpyxl"
             )
+                print("COLUNAS ENCONTRADAS: ")
+                print(df.columns.tolist())
+                print()
+                return df
+
             except Exception as erro:
                 raise ValueError(
                     f"Erro ao abrir Excel: {erro}"
                 )
+
 
         elif extensao == ".xls":
 
