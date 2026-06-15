@@ -36,7 +36,19 @@ class ProcessingService:
         db.session.commit()
         filepath = Path("storage/uploads") / job.stored_filename
         try:
-            df = ExcelProcessor.processar_clientes(filepath)
+            if job.layout_type == LAYOUT_CLIENTES:
+
+                df = (
+                    ExcelProcessor
+                    .processar_clientes(filepath)
+                )
+
+            else:
+
+                raise ValueError(
+                    f"Layout não suportado: "
+                    f"{job.layout_type}"
+                )
             output_filename = JsonExporter.exportar(df)
             job.output_filename = output_filename
 
@@ -47,9 +59,12 @@ class ProcessingService:
             job.completed_at = datetime.utcnow()
             db.session.commit()
             return job
+        
+        
         except Exception as erro:
+            db.session.rollback()
             job.status = JOB_ERROR
-            job.error_message = str(erro)
+            job.error_message = str(erro)[:500]
             job.completed_at = datetime.utcnow()
             db.session.commit()
             raise
