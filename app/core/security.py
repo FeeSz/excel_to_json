@@ -1,6 +1,7 @@
 from flask_login import LoginManager
 from app.models.user import User
 from app.core.database import db
+from flask import jsonify
 
 login_manager = LoginManager()
 
@@ -16,3 +17,12 @@ def load_user(user_id):
     User,
     int(user_id)
 )
+
+
+@login_manager.unauthorized_handler
+def unauthorized():
+
+    return jsonify({
+        "success": False,
+        "message": "Não autenticado."
+    }), 401

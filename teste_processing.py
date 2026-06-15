@@ -7,9 +7,9 @@ from app.processing.service import (
 app = create_app()
 
 with app.app_context():
-
+    JOB_ID = 2
     job = ProcessingService.processar_job(
-        1
+        JOB_ID
     )
 
     print(job.id)
