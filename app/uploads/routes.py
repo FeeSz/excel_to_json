@@ -29,9 +29,10 @@ def upload():
 
         arquivo = request.files["file"]
 
-        job = UploadService.salvar_upload(
-            arquivo
-        )
+        layout = request.form.get("layout")
+
+        job = UploadService.salvar_upload(arquivo, layout)
+       
 
         return jsonify({
             "success": True,

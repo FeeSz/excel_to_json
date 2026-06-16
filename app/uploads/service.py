@@ -7,9 +7,10 @@ from werkzeug.utils import secure_filename
 from flask_login import current_user
 
 from app.core.database import db
-from app.core.constants import JOB_PENDING, JOB_PROCESSING, MAX_PENDING_UPLOADS
+from app.core.constants import JOB_PENDING, JOB_PROCESSING, MAX_PENDING_UPLOADS, LAYOUT_CLIENTES
 
 from app.models.conversion_job import ConversionJob
+
 
 from app.processing.excel_processor import (
     ExcelProcessor
@@ -28,7 +29,13 @@ class UploadService:
     )
 
     @staticmethod
-    def salvar_upload(file):
+    def salvar_upload(
+        file,
+        layout_type
+        ):
+
+        if layout_type != LAYOUT_CLIENTES:
+            raise ValueError("Layout não suportado.")
         
         UploadService.validar_limite_uploads(
             current_user.id
@@ -80,6 +87,7 @@ class UploadService:
                 user_id=current_user.id,
                 filename=filename,
                 stored_filename=stored_filename,
+                layout_type=layout_type,
                 status=JOB_PENDING
             )
 
@@ -91,7 +99,13 @@ class UploadService:
 
             db.session.commit()
 
+            from app.processing.service import (
+       ProcessingService
+            )
+            ProcessingService.processar_job(job.id)
+
             return job
+        
         except Exception:
             filepath.unlink(missing_ok=True)
             raise ValueError(
