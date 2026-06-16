@@ -1,15 +1,22 @@
 from flask import Blueprint
 from flask import jsonify
 from flask import request
+from flask_login import (
+    login_required,
+    current_user
+)
 
-from flask_login import login_required
 
-from app.uploads.service import UploadService
+from app.core.logger import logger
+from app.uploads.service import (
+    UploadService
+)
 
 upload_bp = Blueprint(
-    "uploads",
+    "upload",
     __name__
 )
+
 
 @upload_bp.route(
     "/upload",
@@ -29,10 +36,28 @@ def upload():
 
         arquivo = request.files["file"]
 
-        layout = request.form.get("layout")
+        layout = request.form.get(
+            "layout"
+        )
 
-        job = UploadService.salvar_upload(arquivo, layout)
-       
+        logger.info(
+            f"UPLOAD_INICIADO | "
+            f"user_id={current_user.id} | "
+            f"arquivo={arquivo.filename} | "
+            f"layout={layout}"
+        )
+
+        job = UploadService.salvar_upload(
+            arquivo,
+            layout
+        )
+
+        logger.info(
+            f"JOB_CRIADO | "
+            f"user_id={current_user.id} | "
+            f"job_id={job.id} | "
+            f"status={job.status}"
+        )
 
         return jsonify({
             "success": True,
@@ -43,7 +68,25 @@ def upload():
 
     except ValueError as erro:
 
+        logger.warning(
+            f"UPLOAD_INVALIDO | "
+            f"user_id={current_user.id} | "
+            f"erro={str(erro)}"
+        )
+
         return jsonify({
             "success": False,
             "message": str(erro)
         }), 400
+
+    except Exception as erro:
+
+        logger.exception(
+            f"UPLOAD_ERRO | "
+            f"user_id={current_user.id}"
+        )
+
+        return jsonify({
+            "success": False,
+            "message": "Erro interno."
+        }), 500

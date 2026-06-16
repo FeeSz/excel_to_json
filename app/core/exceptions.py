@@ -1,26 +1,60 @@
-class ValidationError(Exception):
+class AppError(Exception):
     """
-    Erros de validação de dados.
+    Exceção base da aplicação.
+    """
+
+    def __init__(self, message):
+        self.message = message
+        super().__init__(message)
+
+
+class ValidationError(AppError):
+    """
+    Erros de validação.
     """
     pass
 
 
-class LayoutError(Exception):
+class LayoutError(AppError):
     """
-    Layout incorreto ou colunas ausentes.
-    """
-    pass
-
-
-class ProcessingError(Exception):
-    """
-    Erros durante processamento.
+    Layout inválido.
     """
     pass
 
 
-class FileProcessingError(Exception):
+class ProcessingError(AppError):
     """
-    Erro ao processar arquivo.
+    Falha durante processamento.
     """
     pass
+
+
+class FileProcessingError(AppError):
+    """
+    Falha ao processar arquivo.
+    """
+    pass
+
+
+class AuthenticationError(AppError):
+    """
+    Erros de autenticação.
+    """
+    pass
+
+
+class AuthorizationError(AppError):
+    """
+    Erros de permissão.
+    """
+    pass
+
+
+class NotFoundError(AppError):
+    """
+    Recurso não encontrado.
+    """
+    pass
+                
+    
+

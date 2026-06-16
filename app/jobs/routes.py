@@ -1,7 +1,7 @@
 from flask import Blueprint
 from flask import jsonify
 from flask import send_file
-
+from app.core.logger import logger
 from flask_login import (
     login_required,
     current_user
@@ -120,11 +120,6 @@ def download_job(job_id):
             "success": False,
             "message": "Arquivo não disponível."
         }), 404
-    
-    print("JOB",job_id)
-    print("AQRUIVO",arquivo)
-    print("EXISTS",arquivo.exists())
-    print("TIPO",type(arquivo))
 
     return send_file(
         str(arquivo),

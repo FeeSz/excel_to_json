@@ -7,10 +7,19 @@ from werkzeug.utils import secure_filename
 from flask_login import current_user
 
 from app.core.database import db
-from app.core.constants import JOB_PENDING, JOB_PROCESSING, MAX_PENDING_UPLOADS, LAYOUT_CLIENTES
 
-from app.models.conversion_job import ConversionJob
+from app.core.constants import (
+    JOB_PENDING,
+    JOB_PROCESSING,
+    MAX_PENDING_UPLOADS,
+    LAYOUT_CLIENTES
+)
 
+from app.models.conversion_job import (
+    ConversionJob
+)
+
+from app.core.logger import logger
 
 from app.processing.excel_processor import (
     ExcelProcessor
@@ -32,11 +41,13 @@ class UploadService:
     def salvar_upload(
         file,
         layout_type
-        ):
+    ):
 
         if layout_type != LAYOUT_CLIENTES:
-            raise ValueError("Layout não suportado.")
-        
+            raise ValueError(
+                "Layout não suportado."
+            )
+
         UploadService.validar_limite_uploads(
             current_user.id
         )
@@ -45,10 +56,13 @@ class UploadService:
 
             raise ValueError(
                 "Arquivo inválido."
-        )
-        
+            )
+
         if "." not in file.filename:
-            raise ValueError("Arquivo sem extensão.")
+
+            raise ValueError(
+                "Arquivo sem extensão."
+            )
 
         extensao = (
             file.filename
@@ -56,11 +70,14 @@ class UploadService:
             .lower()
         )
 
-        if extensao not in UploadService.ALLOWED_EXTENSIONS:
+        if extensao not in (
+            UploadService
+            .ALLOWED_EXTENSIONS
+        ):
 
             raise ValueError(
                 "Formato não suportado."
-        )
+            )
 
         UploadService.STORAGE_PATH.mkdir(
             parents=True,
@@ -83,6 +100,18 @@ class UploadService:
         file.save(filepath)
 
         try:
+
+            logger.info(
+                f"UPLOAD_VALIDADO | "
+                f"user_id={current_user.id} | "
+                f"arquivo={file.filename} | "
+                f"layout={layout_type}"
+            )
+
+            ExcelProcessor.carregar_excel(
+                filepath
+            )
+
             job = ConversionJob(
                 user_id=current_user.id,
                 filename=filename,
@@ -91,29 +120,45 @@ class UploadService:
                 status=JOB_PENDING
             )
 
-            ExcelProcessor.carregar_excel(
-                filepath
-            )
-
             db.session.add(job)
-
             db.session.commit()
 
             from app.processing.service import (
-       ProcessingService
+                ProcessingService
             )
-            ProcessingService.processar_job(job.id)
+
+            ProcessingService.processar_job(
+                job.id
+            )
+
+            logger.info(
+                f"JOB_CONCLUIDO | "
+                f"job_id={job.id}"
+            )
 
             return job
-        
+
         except Exception:
-            filepath.unlink(missing_ok=True)
+
+            logger.exception(
+                f"UPLOAD_ERRO | "
+                f"user_id={current_user.id} | "
+                f"arquivo={file.filename}"
+            )
+
+            filepath.unlink(
+                missing_ok=True
+            )
+
             raise ValueError(
                 "Arquivo Excel inválido."
             )
-        
+
     @staticmethod
-    def validar_limite_uploads(user_id):
+    def validar_limite_uploads(
+        user_id
+    ):
+
         uploads_pendentes = (
             ConversionJob.query
             .filter(
@@ -122,12 +167,15 @@ class UploadService:
                     JOB_PENDING,
                     JOB_PROCESSING
                 ])
-            ).count()
-        )
-        if uploads_pendentes >= MAX_PENDING_UPLOADS:
-            raise ValueError(
-                "Limite de uplodas simultâneos atingido."
             )
+            .count()
+        )
 
-    
-            
+        if (
+            uploads_pendentes
+            >= MAX_PENDING_UPLOADS
+        ):
+
+            raise ValueError(
+                "Limite de uploads simultâneos atingido."
+            )

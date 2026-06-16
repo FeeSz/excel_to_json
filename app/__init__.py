@@ -1,18 +1,18 @@
 from flask import Flask
 from flask import jsonify
-
 from app.core.config import Config
 from app.core.database import db
 from app.core.database import migrate
 from app.core.security import login_manager
-
 from app.auth.routes import auth_bp
 from app.dashboard.routes import dashboard_bp
 from app.uploads.routes import upload_bp
 from app.jobs.routes import jobs_bp
-
 from app.models.user import User
 from app.models.conversion_job import ConversionJob
+from app.core.error_handlers import (register_error_handlers)
+from app.core.logger import logger
+from app.system.routes import system_bp
 
 
 def create_app():
@@ -29,7 +29,9 @@ def create_app():
     app.register_blueprint(dashboard_bp)
     app.register_blueprint(upload_bp)
     app.register_blueprint(jobs_bp)
+    app.register_blueprint(system_bp)
 
+    
     @app.errorhandler(413)
     def arquivo_muito_grande(error):
 
@@ -40,5 +42,12 @@ def create_app():
                 "de 25 MB."
             )
         }), 413
+    
+    
 
+    register_error_handlers(app)
+    
+    logger.info(
+    "Aplicação iniciada."
+)
     return app

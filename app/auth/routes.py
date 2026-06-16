@@ -1,12 +1,14 @@
 from flask import Blueprint
 from flask import jsonify
 from flask import request
-
 from flask_login import login_required
 from flask_login import login_user
 from flask_login import logout_user
 from flask_login import current_user
 from app.auth.service import AuthService
+from app.core.logger import logger
+
+
 
 auth_bp = Blueprint(
     "auth",
@@ -36,13 +38,22 @@ def login():
         senha
     )
 
+    
     if not usuario:
+        logger.warning(
+    f"LOGIN_FALHA | email={email}"
+)
         return jsonify({
             "success": False,
             "message": "Credenciais inválidas"
         }), 401
+    
+    
 
     login_user(usuario)
+    logger.info(
+    f"LOGIN_SUCESSO | usuario_id={usuario.id} | email={usuario.email}"
+)
 
     return jsonify({
         "success": True,
@@ -53,6 +64,9 @@ def login():
     "/logout",
     methods=["POST"]
 )
+
+
+
 @login_required
 def logout():
 
@@ -69,6 +83,8 @@ def logout():
     "/me",
     methods=["GET"]
 )
+
+
 @login_required
 def me():
 

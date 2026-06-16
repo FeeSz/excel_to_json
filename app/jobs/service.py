@@ -3,9 +3,6 @@ from pathlib import Path
 from app.models.conversion_job import ConversionJob
 from app.core.database import db
 
-
-from pathlib import Path
-
 BASE_DIR = Path(__file__).resolve().parents[2]
 
 OUTPUT_PATH = (
