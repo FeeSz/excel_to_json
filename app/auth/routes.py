@@ -69,7 +69,12 @@ def login():
 
 @login_required
 def logout():
-
+    
+    logger.info(
+    f"LOGOUT | "
+    f"user_id={current_user.id}"
+    )
+    
     logout_user()
 
     return jsonify({

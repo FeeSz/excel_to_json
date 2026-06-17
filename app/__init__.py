@@ -15,6 +15,8 @@ from app.core.logger import logger
 from app.system.routes import system_bp
 from app.models.user import User
 from app.models.conversion_job import ConversionJob
+from app.admin.routes import admin_bp
+
 
 def create_app():
 
@@ -31,7 +33,7 @@ def create_app():
     app.register_blueprint(upload_bp)
     app.register_blueprint(jobs_bp)
     app.register_blueprint(system_bp)
-
+    app.register_blueprint(admin_bp)
 
     @app.errorhandler(413)
     def arquivo_muito_grande(error):
