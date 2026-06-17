@@ -13,7 +13,8 @@ from app.models.conversion_job import ConversionJob
 from app.core.error_handlers import (register_error_handlers)
 from app.core.logger import logger
 from app.system.routes import system_bp
-
+from app.models.user import User
+from app.models.conversion_job import ConversionJob
 
 def create_app():
 
@@ -31,7 +32,7 @@ def create_app():
     app.register_blueprint(jobs_bp)
     app.register_blueprint(system_bp)
 
-    
+
     @app.errorhandler(413)
     def arquivo_muito_grande(error):
 
@@ -48,6 +49,6 @@ def create_app():
     register_error_handlers(app)
     
     logger.info(
-    "Aplicação iniciada."
+    "APP_STARTUP | aplicação iniciada"
 )
     return app

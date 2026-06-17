@@ -127,8 +127,12 @@ class UploadService:
                 ProcessingService
             )
 
-            ProcessingService.processar_job(
-                job.id
+            db.session.add(job)
+            db.session.commit()
+
+            logger.info(
+                f"JOB_ENFILEIRADO | "
+                f"job_id={job.id}"
             )
 
             logger.info(
