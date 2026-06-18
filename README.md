@@ -297,5 +297,5 @@ Desenvolvedor focado em automação, processamento de dados e desenvolvimento de
 
 ## 📄 Licença
 
-Este projeto está licenciado sob a Licença MIT.
+Este projeto está licenciado sob a Licença MIT...
    
