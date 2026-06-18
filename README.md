@@ -248,20 +248,20 @@ Campos obrigatórios:
 
 ### 🚧 Sprint 3.5 — Normalização
 
-- [ ] Normalização de CPF
-- [ ] Normalização de Telefone
-- [ ] Normalização de E-mail
-- [ ] Remoção de Duplicados
+- [x] Normalização de CPF
+- [x] Normalização de Telefone
+- [x] Normalização de E-mail
+- [x] Remoção de Duplicados
 
 ### 🚧 Sprint 3.6 — Exportação
 
-- [ ] Conversão JSON
-- [ ] Atualização Automática de Jobs
-- [ ] Histórico de Arquivos
+- [x] Conversão JSON
+- [x] Atualização Automática de Jobs
+- [x] Histórico de Arquivos
 
 ### 🚧 Sprint 4 — Interface Web
 
-- [ ] Dashboard
+- [/] Dashboard
 - [ ] Upload Interface
 - [ ] Histórico de Processamentos
 
