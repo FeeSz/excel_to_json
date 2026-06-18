@@ -261,7 +261,7 @@ Campos obrigatórios:
 
 ### 🚧 Sprint 4 — Interface Web
 
-- [/] Dashboard
+- [ ] Dashboard
 - [ ] Upload Interface
 - [ ] Histórico de Processamentos
 
